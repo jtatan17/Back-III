@@ -16,7 +16,7 @@ export default class UserMocksDAO {
           first_name: faker.person.firstName(),
           last_name: faker.person.lastName(),
           email: faker.internet.email(),
-          password: hashedPassword, // not hashed
+          password: hashedPassword,
           role: faker.helpers.arrayElement(["user", "admin"]),
           pets: [],
         });

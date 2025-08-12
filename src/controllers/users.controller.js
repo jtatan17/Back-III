@@ -32,9 +32,9 @@ const deleteUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    console.log("Incoming request body:", req.body); // Add this line
+    console.log("Incoming request body:", req.body);
     const one = await usersService.create(req.body);
-    console.log("Created user:", one); // Add this line
+    console.log("Created user:", one);
     return res.status(201).json({ status: "success", payload: one });
   } catch (error) {
     console.error("Error creating user:", error);

@@ -6,7 +6,6 @@ export const generateUserMocks = async (req, res) => {
     const quantity = parseInt(req.query.qty) || 50;
     const users = await userMockService.generateMockUsers(quantity);
 
-    // Map to DTOs before sending
     const userDTO = users.map((u) => UserDTO.getUserTokenFrom(u));
 
     res.status(201).json({

@@ -27,10 +27,8 @@ export const generateData = async (req, res) => {
       );
     }
 
-    // Run all tasks in parallel
     const results = await Promise.all(tasks);
 
-    // Shape response into an object with keys for each type
     const payload = {};
     results.forEach((result) => {
       payload[result.type] = result.data;
