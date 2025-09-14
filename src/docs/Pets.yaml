@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: Pets API
+  version: 1.0.0
+  description: API documentation for pets management
+
+paths:
+  /api/pets:
+    get:
+      summary: Get all pets
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: List of pets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Pet"
+
+  /api/pets/createPet:
+    post:
+      summary: Create a new pet
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetInput"
+      responses:
+        "201":
+          description: Pet created successfully
+
+  /api/pets/withimage:
+    post:
+      summary: Create a new pet with an image
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                age:
+                  type: integer
+                type:
+                  type: string
+              required:
+                - image
+                - name
+      responses:
+        "201":
+          description: Pet created with image
+
+  /api/pets/{pid}:
+    put:
+      summary: Update a pet by ID
+      tags:
+        - Pets
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+          description: Pet ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetInput"
+      responses:
+        "200":
+          description: Pet updated successfully
+        "404":
+          description: Pet not found
+
+    delete:
+      summary: Delete a pet by ID
+      tags:
+        - Pets
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+          description: Pet ID
+      responses:
+        "200":
+          description: Pet deleted successfully
+        "404":
+          description: Pet not found
+
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        type:
+          type: string
+
+    PetInput:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+        type:
+          type: string
+      required:
+        - name
+        - age

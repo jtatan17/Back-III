@@ -1,0 +1,126 @@
+openapi: 3.0.0
+info:
+  title: Mocks API
+  version: 1.0.0
+  description: API documentation for generating mock data
+
+paths:
+  /api/mocks/mockingpets:
+    get:
+      summary: Generate mock pets
+      tags:
+        - Mocks
+      parameters:
+        - in: query
+          name: qty
+          schema:
+            type: integer
+            default: 5
+          description: Number of pets to generate
+      responses:
+        "201":
+          description: Mock pets generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Pet"
+
+  /api/mocks/mockingusers:
+    get:
+      summary: Generate mock users
+      tags:
+        - Mocks
+      parameters:
+        - in: query
+          name: qty
+          schema:
+            type: integer
+            default: 5
+          description: Number of users to generate
+      responses:
+        "201":
+          description: Mock users generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+
+  /api/mocks/generateData:
+    post:
+      summary: Generate a combination of mock users and pets
+      tags:
+        - Mocks
+      parameters:
+        - in: query
+          name: users
+          schema:
+            type: integer
+            default: 0
+          description: Number of users to generate
+        - in: query
+          name: pets
+          schema:
+            type: integer
+            default: 0
+          description: Number of pets to generate
+      responses:
+        "201":
+          description: Mock data generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/User"
+                      pets:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Pet"
+        "500":
+          description: Internal server error
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        type:
+          type: string

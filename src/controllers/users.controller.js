@@ -15,13 +15,33 @@ const getUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const updateBody = req.body;
-  const userId = req.params.uid;
-  const user = await usersService.getUserById(userId);
-  if (!user)
-    return res.status(404).send({ status: "error", error: "User not found" });
-  const result = await usersService.update(userId, updateBody);
-  res.send({ status: "success", message: "User updated" });
+  try {
+    const updateBody = req.body;
+    const userId = req.params.uid;
+
+    // Check if user exists
+    const user = await usersService.getUserById(userId);
+    if (!user) {
+      return res.status(404).send({
+        status: "error",
+        error: "User not found",
+      });
+    }
+
+    // Update and return the updated user
+    const updatedUser = await usersService.update(userId, updateBody);
+
+    return res.status(200).send({
+      status: "success",
+      payload: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).send({
+      status: "error",
+      error: "Internal server error",
+    });
+  }
 };
 
 const deleteUser = async (req, res) => {

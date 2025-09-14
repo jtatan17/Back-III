@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: Users API
+  version: 1.0.0
+  description: API documentation for user management
+
+paths:
+  /api/users:
+    get:
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        "200":
+          description: List of all users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+
+  /api/users/create:
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "201":
+          description: User created successfully
+        "400":
+          description: Validation error
+
+  /api/users/{uid}:
+    get:
+      summary: Get a user by ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: string
+          required: true
+          description: User ID
+      responses:
+        "200":
+          description: User data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+
+    put:
+      summary: Update a user by ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: string
+          required: true
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "200":
+          description: User updated successfully
+        "404":
+          description: User not found
+        "500":
+          description: Internal server error
+
+    delete:
+      summary: Delete a user by ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: string
+          required: true
+          description: User ID
+      responses:
+        "200":
+          description: User deleted successfully
+        "404":
+          description: User not found
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - email
+        - password
